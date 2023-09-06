@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package rulestone;
+
+option go_package = "github.com/atlasgurus/rulestone-server/grpc";
+option java_package = "com.atlasgurus.rulestone.grpc";
+
+service RulestoneService {
+  rpc CreateRuleEngine (EmptyRequest) returns (RuleEngineResponse);
+  rpc AddRuleFromJsonString (RuleFromStringRequest) returns (RuleResponse);
+  rpc AddRuleFromYamlString (RuleFromStringRequest) returns (RuleResponse);
+  rpc AddRuleFromFilePath (RuleFromFileRequest) returns (RuleResponse);
+  rpc AddRulesFromDirectoryPath (RuleFromDirectoryRequest) returns (NumRulesResponse);
+  rpc Activate (RuleEngineRequest) returns (EmptyResponse);
+  rpc Match (stream MatchRequest) returns (stream MatchResponse);
+}
+
+message EmptyRequest {}
+message EmptyResponse {}
+
+message RuleEngineRequest {
+  int32 ruleEngineId = 1;
+}
+
+message RuleEngineResponse {
+  int32 ruleEngineId = 1;
+}
+
+message RuleFromStringRequest {
+  int32 ruleEngineId = 1;
+  string ruleString = 2;
+}
+
+message RuleFromFileRequest {
+  int32 ruleEngineId = 1;
+  string ruleFilePath = 2;
+}
+
+message RuleFromDirectoryRequest {
+  int32 ruleEngineId = 1;
+  string rulesDirectoryPath = 2;
+}
+
+message RuleResponse {
+  int32 ruleId = 1;
+}
+
+message NumRulesResponse {
+  int32 numRules = 1;
+}
+
+message RulesResponse {
+  repeated int32 ruleIds = 1;
+}
+
+message MatchRequest {
+  int64 requestId = 1;
+  int32 ruleEngineId = 2;
+  string jsonData = 3;
+}
+
+message MatchResponse {
+  int64 requestId = 1;
+  repeated int32 matchIds = 2;
+}
