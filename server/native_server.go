@@ -27,7 +27,7 @@ func NewRulestoneServer(conn net.Conn) *RulestoneServer {
 	return &result
 }
 
-const SocketPath = "/tmp/go_sidecar.sock"
+const SocketPath = "/tmp/rulestone_sidecar.sock"
 const SendBuferSize = 4 * 1024 * 1024
 const RecvBuferSize = 4 * 1024 * 1024
 const CreateRuleEngine = 1
