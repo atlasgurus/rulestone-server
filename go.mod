@@ -3,7 +3,7 @@ module github.com/atlasgurus/rulestone-server
 go 1.18
 
 require (
-	github.com/atlasgurus/rulestone v0.0.0-20230902022307-d224cb51d44b
+	github.com/atlasgurus/rulestone v0.1.0
 	google.golang.org/grpc v1.58.0
 	google.golang.org/protobuf v1.31.0
 )
