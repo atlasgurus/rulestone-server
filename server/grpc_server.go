@@ -50,9 +50,9 @@ func (rs *RulestoneGrpcServer) AddRuleFromYamlString(ctx context.Context, req *g
 	ruleId := rs.AddRuleFromString(int(req.RuleEngineId), req.RuleString, "yaml")
 	return &grpc.RuleResponse{RuleId: int32(ruleId)}, nil
 }
-func (rs *RulestoneGrpcServer) AddRuleFromFilePath(ctx context.Context, req *grpc.RuleFromFileRequest) (*grpc.RuleResponse, error) {
-	ruleId := rs.AddRuleFromFile(int(req.RuleEngineId), req.RuleFilePath)
-	return &grpc.RuleResponse{RuleId: int32(ruleId)}, nil
+func (rs *RulestoneGrpcServer) AddRulesFromFilePath(ctx context.Context, req *grpc.RuleFromFileRequest) (*grpc.NumRulesResponse, error) {
+	numRules := rs.AddRulesFromFile(int(req.RuleEngineId), req.RuleFilePath)
+	return &grpc.NumRulesResponse{NumRules: int32(numRules)}, nil
 }
 func (rs *RulestoneGrpcServer) AddRulesFromDirectoryPath(ctx context.Context, req *grpc.RuleFromDirectoryRequest) (*grpc.NumRulesResponse, error) {
 	numRules := rs.AddRulesFromDirectory(int(req.RuleEngineId), req.RulesDirectoryPath)

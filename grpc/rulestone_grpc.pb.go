@@ -21,7 +21,7 @@ type RulestoneServiceClient interface {
 	CreateRuleEngine(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*RuleEngineResponse, error)
 	AddRuleFromJsonString(ctx context.Context, in *RuleFromStringRequest, opts ...grpc.CallOption) (*RuleResponse, error)
 	AddRuleFromYamlString(ctx context.Context, in *RuleFromStringRequest, opts ...grpc.CallOption) (*RuleResponse, error)
-	AddRuleFromFilePath(ctx context.Context, in *RuleFromFileRequest, opts ...grpc.CallOption) (*RuleResponse, error)
+	AddRulesFromFilePath(ctx context.Context, in *RuleFromFileRequest, opts ...grpc.CallOption) (*NumRulesResponse, error)
 	AddRulesFromDirectoryPath(ctx context.Context, in *RuleFromDirectoryRequest, opts ...grpc.CallOption) (*NumRulesResponse, error)
 	Activate(ctx context.Context, in *RuleEngineRequest, opts ...grpc.CallOption) (*EmptyResponse, error)
 	Match(ctx context.Context, opts ...grpc.CallOption) (RulestoneService_MatchClient, error)
@@ -62,9 +62,9 @@ func (c *rulestoneServiceClient) AddRuleFromYamlString(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *rulestoneServiceClient) AddRuleFromFilePath(ctx context.Context, in *RuleFromFileRequest, opts ...grpc.CallOption) (*RuleResponse, error) {
-	out := new(RuleResponse)
-	err := c.cc.Invoke(ctx, "/rulestone.RulestoneService/AddRuleFromFilePath", in, out, opts...)
+func (c *rulestoneServiceClient) AddRulesFromFilePath(ctx context.Context, in *RuleFromFileRequest, opts ...grpc.CallOption) (*NumRulesResponse, error) {
+	out := new(NumRulesResponse)
+	err := c.cc.Invoke(ctx, "/rulestone.RulestoneService/AddRulesFromFilePath", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ type RulestoneServiceServer interface {
 	CreateRuleEngine(context.Context, *EmptyRequest) (*RuleEngineResponse, error)
 	AddRuleFromJsonString(context.Context, *RuleFromStringRequest) (*RuleResponse, error)
 	AddRuleFromYamlString(context.Context, *RuleFromStringRequest) (*RuleResponse, error)
-	AddRuleFromFilePath(context.Context, *RuleFromFileRequest) (*RuleResponse, error)
+	AddRulesFromFilePath(context.Context, *RuleFromFileRequest) (*NumRulesResponse, error)
 	AddRulesFromDirectoryPath(context.Context, *RuleFromDirectoryRequest) (*NumRulesResponse, error)
 	Activate(context.Context, *RuleEngineRequest) (*EmptyResponse, error)
 	Match(RulestoneService_MatchServer) error
@@ -147,8 +147,8 @@ func (UnimplementedRulestoneServiceServer) AddRuleFromJsonString(context.Context
 func (UnimplementedRulestoneServiceServer) AddRuleFromYamlString(context.Context, *RuleFromStringRequest) (*RuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRuleFromYamlString not implemented")
 }
-func (UnimplementedRulestoneServiceServer) AddRuleFromFilePath(context.Context, *RuleFromFileRequest) (*RuleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddRuleFromFilePath not implemented")
+func (UnimplementedRulestoneServiceServer) AddRulesFromFilePath(context.Context, *RuleFromFileRequest) (*NumRulesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddRulesFromFilePath not implemented")
 }
 func (UnimplementedRulestoneServiceServer) AddRulesFromDirectoryPath(context.Context, *RuleFromDirectoryRequest) (*NumRulesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRulesFromDirectoryPath not implemented")
@@ -226,20 +226,20 @@ func _RulestoneService_AddRuleFromYamlString_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RulestoneService_AddRuleFromFilePath_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _RulestoneService_AddRulesFromFilePath_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RuleFromFileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RulestoneServiceServer).AddRuleFromFilePath(ctx, in)
+		return srv.(RulestoneServiceServer).AddRulesFromFilePath(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rulestone.RulestoneService/AddRuleFromFilePath",
+		FullMethod: "/rulestone.RulestoneService/AddRulesFromFilePath",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RulestoneServiceServer).AddRuleFromFilePath(ctx, req.(*RuleFromFileRequest))
+		return srv.(RulestoneServiceServer).AddRulesFromFilePath(ctx, req.(*RuleFromFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -326,8 +326,8 @@ var RulestoneService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RulestoneService_AddRuleFromYamlString_Handler,
 		},
 		{
-			MethodName: "AddRuleFromFilePath",
-			Handler:    _RulestoneService_AddRuleFromFilePath_Handler,
+			MethodName: "AddRulesFromFilePath",
+			Handler:    _RulestoneService_AddRulesFromFilePath_Handler,
 		},
 		{
 			MethodName: "AddRulesFromDirectoryPath",

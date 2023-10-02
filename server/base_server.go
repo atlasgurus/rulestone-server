@@ -24,7 +24,7 @@ type BaseServer interface {
 	ActivateRuleEngine(id int) int
 	NewRulestoneEngine() *RuleEngineInfo
 	CreateNewRuleEngine() int16
-	AddRuleFromFile(id int, rulePath string) int
+	AddRulesFromFile(id int, rulePath string) int
 	AddRuleFromString(id int, rule string, format string) int
 	AddRulesFromDirectory(id int, rulesPath string) int
 	PerformMatch(requestId int64, ruleEngineID int, jsonData string, commObj interface{}) error
@@ -63,13 +63,13 @@ func (rs *BaseRulestoneServer) CreateNewRuleEngine() int16 {
 	return eng.RuleEngineId
 }
 
-func (rs *BaseRulestoneServer) AddRuleFromFile(id int, rulePath string) int {
-	ruleId, err := rs.ruleEngines[id].repo.RegisterRuleFromFile(rulePath)
-	if err != nil {
+func (rs *BaseRulestoneServer) AddRulesFromFile(id int, rulePath string) int {
+	ruleIds, err := rs.ruleEngines[id].repo.RegisterRulesFromFile(rulePath)
+	if err != nil || len(ruleIds) == 0 {
 		return -1
 	}
 
-	return int(ruleId)
+	return len(ruleIds)
 }
 
 func (rs *BaseRulestoneServer) AddRuleFromString(id int, rule string, format string) int {
@@ -91,7 +91,7 @@ func (rs *BaseRulestoneServer) AddRulesFromDirectory(id int, rulesPath string) i
 
 	for _, file := range files {
 		rulePath := filepath.Join(rulesPath, file.Name())
-		_, err := rs.ruleEngines[id].repo.RegisterRuleFromFile(rulePath)
+		_, err := rs.ruleEngines[id].repo.RegisterRulesFromFile(rulePath)
 		if err != nil {
 			return -1
 		}

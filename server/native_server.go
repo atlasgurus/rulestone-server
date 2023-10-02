@@ -33,7 +33,7 @@ const RecvBuferSize = 4 * 1024 * 1024
 const CreateRuleEngine = 1
 const AddRuleFromJsonStringCommand = 2
 const AddRuleFromYamlStringCommand = 3
-const AddRuleFromFileCommand = 4
+const AddRulesFromFileCommand = 4
 const AddRulesFromDirectoryCommand = 5
 const ActivateCommand = 6
 const MatchCommand = 7
@@ -138,7 +138,7 @@ func (rs *RulestoneServer) HandleConnection() {
 			}
 			numRules := rs.AddRulesFromDirectory(int(ruleEngineID), rulePath)
 			writeInt32(rs.conn, uint32(numRules))
-		case AddRuleFromFileCommand:
+		case AddRulesFromFileCommand:
 			ruleEngineID, err := readInt16(rs.conn)
 			if err != nil {
 				// Handle other errors, for example by logging them
@@ -151,8 +151,8 @@ func (rs *RulestoneServer) HandleConnection() {
 				fmt.Println("Error reading message:", err)
 				return
 			}
-			ruleId := rs.AddRuleFromFile(int(ruleEngineID), rulePath)
-			writeInt32(rs.conn, uint32(ruleId))
+			numRules := rs.AddRulesFromFile(int(ruleEngineID), rulePath)
+			writeInt32(rs.conn, uint32(numRules))
 		case MatchCommand:
 			if rs.processMatchCommand() != nil {
 				return

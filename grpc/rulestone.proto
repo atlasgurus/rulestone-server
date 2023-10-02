@@ -9,7 +9,7 @@ service RulestoneService {
   rpc CreateRuleEngine (EmptyRequest) returns (RuleEngineResponse);
   rpc AddRuleFromJsonString (RuleFromStringRequest) returns (RuleResponse);
   rpc AddRuleFromYamlString (RuleFromStringRequest) returns (RuleResponse);
-  rpc AddRuleFromFilePath (RuleFromFileRequest) returns (RuleResponse);
+  rpc AddRulesFromFilePath (RuleFromFileRequest) returns (NumRulesResponse);
   rpc AddRulesFromDirectoryPath (RuleFromDirectoryRequest) returns (NumRulesResponse);
   rpc Activate (RuleEngineRequest) returns (EmptyResponse);
   rpc Match (stream MatchRequest) returns (stream MatchResponse);
